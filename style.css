@@ -2,10 +2,19 @@
   color: black;
 }
 
+#ul-list{
+  display: grid;                     /* Enable CSS Grid */
+  grid-template-columns: repeat(3, 1fr); /* Create three equal columns */
+  gap: 20px;
+}
+
 .li-list-cls{
   width: 350px;
   background-color: whitesmoke;
   list-style-type: none;
+
+  display: flex;
+  flex-direction: column;
 }
 
 .h2-title-cls{
@@ -16,6 +25,7 @@
   text-align: center;
   box-sizing: border-box;
   border-radius: 5px;
+  margin-top: 0;
 }
 .img-picture-cls{
   display: block;

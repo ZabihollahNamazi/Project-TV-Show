@@ -9,25 +9,31 @@ function makePageForEpisodes(episodeList) {
   // rootElem.textContent = `Got ${episodeList.length} episode(s)`;
   let ulList = document.getElementById("ul-list");
 
-  let liList = document.createElement('li');
-  ulList.appendChild(liList);
-  liList.classList.add("li-list-cls")
+  for(let item in episodeList){
 
-  let episodeTitle = document.createElement("h2");
-  episodeTitle.innerHTML = episodeList[0].name;
-  episodeTitle.classList.add("h2-title-cls");
+    let liList = document.createElement('li');
+    ulList.appendChild(liList);
+    liList.classList.add("li-list-cls")
 
-  let episodePicture = document.createElement("img");
-  episodePicture.src = episodeList[0].image.medium;
-  episodePicture.classList.add("img-picture-cls");
+    let episodeTitle = document.createElement("h2");
+    episodeTitle.innerHTML = episodeList[item].name;
+    episodeTitle.classList.add("h2-title-cls");
 
-  let episodeSummary = document.createElement("p");
-  episodeSummary.innerHTML = episodeList[0].summary;
-  episodeSummary.classList.add("p-summary-cls")
+    let episodePicture = document.createElement("img");
+    episodePicture.src = episodeList[item].image.medium;
+    episodePicture.classList.add("img-picture-cls");
 
-  liList.appendChild(episodeTitle);
-  liList.appendChild(episodePicture);
-  liList.appendChild(episodeSummary);
+    let episodeSummary = document.createElement("p");
+    episodeSummary.innerHTML = episodeList[item].summary;
+    episodeSummary.classList.add("p-summary-cls")
+
+    liList.appendChild(episodeTitle);
+    liList.appendChild(episodePicture);
+    liList.appendChild(episodeSummary);
+
+  }
+
+  
   
 
 }
