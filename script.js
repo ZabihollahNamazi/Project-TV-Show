@@ -16,7 +16,7 @@ function makePageForEpisodes(episodeList) {
     liList.classList.add("li-list-cls")
 
     let episodeTitle = document.createElement("h2");
-    episodeTitle.innerHTML = episodeList[item].name;
+    episodeTitle.innerHTML = episodeList[item].name + `-S${episodeList[item].season.toString().padStart(2, "0")}E${episodeList[item].number.toString().padStart(2, "0")}`;
     episodeTitle.classList.add("h2-title-cls");
 
     let episodePicture = document.createElement("img");
