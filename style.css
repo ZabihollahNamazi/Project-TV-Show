@@ -1,3 +1,27 @@
 #root {
-  color: red;
+  color: black;
+}
+
+.li-list-cls{
+  width: 350px;
+  background-color: whitesmoke;
+  list-style-type: none;
+}
+
+.h2-title-cls{
+  border: solid 2px black;
+  width: 100%;
+  padding-top: 10px;
+  padding-bottom: 10px;
+  text-align: center;
+  box-sizing: border-box;
+  border-radius: 5px;
+}
+.img-picture-cls{
+  display: block;
+  padding: 10px;
+  margin: auto;
+}
+.p-summary-cls{
+  padding: 0 20px 20px 20px;
 }
