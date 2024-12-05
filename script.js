@@ -27,9 +27,14 @@ function makePageForEpisodes(episodeList) {
     episodeSummary.innerHTML = episodeList[item].summary;
     episodeSummary.classList.add("p-summary-cls")
 
+    let source = document.createElement("p");
+    source.innerHTML = `<p>Link to this episode  <a href=${episodeList[item].url} target="_blank" class="episode-link">  TVMaze</a></p>`;
+    source.classList.add("p-episode-link");
+
     liList.appendChild(episodeTitle);
     liList.appendChild(episodePicture);
     liList.appendChild(episodeSummary);
+    liList.appendChild(source);
 
   }
 
