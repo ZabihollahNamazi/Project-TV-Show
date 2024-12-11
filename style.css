@@ -49,14 +49,16 @@ body{
 }
 .p-summary-cls{
   margin: 10% 10%;
+  color: lightgray;
 }
 
 .p-episode-link{
   margin: auto 10% 5% 10%; /* Push the link to the bottom */
+  color: lightgray;
 }
 .episode-link{
   text-decoration: none;
-  color: #A0DEFF;
+  color: #0e56f1;
 }
 
 .li-list-cls:hover{

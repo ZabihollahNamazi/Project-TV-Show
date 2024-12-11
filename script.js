@@ -21,6 +21,7 @@ function makePageForEpisodes(episodeList) {
 
     let episodePicture = document.createElement("img");
     episodePicture.src = episodeList[item].image.medium;
+    episodePicture.alt = "Game of Thrones";
     episodePicture.classList.add("img-picture-cls");
 
     let episodeSummary = document.createElement("p");
