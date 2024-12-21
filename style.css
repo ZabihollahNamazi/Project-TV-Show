@@ -94,14 +94,14 @@ body{
 }
 
 #search-input {
-  width: 60%;
+  width: 40%;
   padding: 10px;
   font-size: 16px;
-  border-radius: 5px;
+  border-radius: 15px;
   border: 1px solid #ccc;
 }
 
 #search-result {
   margin-top: 10px;
-  color: #d3d3d3;
+  color: #63a6a9;
 }
