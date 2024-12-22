@@ -7,14 +7,16 @@ function setup() {
 // Fetch episodes from the TVMaze API
 function fetchEpisodes() {
   const ulList = document.getElementById("ul-list"); // Root element for displaying episodes
+  const episodeSelect = document.getElementById("episode-select"); // Dropdown for jumping to episodes
 
-  if (!ulList) {
-    console.error("Error: 'ul-list' element not found.");
+  if (!ulList || !episodeSelect) {
+    console.error("Error: 'ul-list' or 'episode-select' element not found.");
     return;
   }
 
   // Show loading message while fetching data
   ulList.innerHTML = "<li>Loading episodes...</li>";
+  episodeSelect.innerHTML = "<option value=''>Loading episodes...</option>"; // Show loading message in dropdown
 
   // Fetch data from TVMaze API
   fetch("https://api.tvmaze.com/shows/82/episodes")
@@ -26,7 +28,8 @@ function fetchEpisodes() {
     })
     .then((episodes) => {
       if (episodes.length > 0) {
-        // Display episodes if data is fetched successfully
+        // Populate the dropdown and display episodes
+        populateDropdown(episodes);
         displayEpisodes(episodes);
       } else {
         // Handle the case where no episodes are returned
@@ -37,7 +40,26 @@ function fetchEpisodes() {
       // Handle any fetch or network errors
       console.error("Error fetching episodes:", error);
       ulList.innerHTML = "<li>Error loading episodes. Please try again later.</li>";
+      episodeSelect.innerHTML = "<option value=''>Error loading episodes</option>"; // Update dropdown on error
     });
+}
+
+// Populates the dropdown with episode options
+function populateDropdown(episodes) {
+  const episodeSelect = document.getElementById("episode-select");
+
+  // Clear previous options
+  episodeSelect.innerHTML = "<option value=''>Select an episode...</option>"; // Reset dropdown
+
+  // Add an option for each episode
+  episodes.forEach((episode, index) => {
+    const option = document.createElement("option");
+    option.value = index; // Store the episode index as the value
+    option.textContent = `${episode.name} - S${String(episode.season).padStart(2, "0")}E${String(
+      episode.number
+    ).padStart(2, "0")}`;
+    episodeSelect.appendChild(option);
+  });
 }
 
 // Displays the list of episodes on the page
