@@ -1,23 +1,25 @@
-body{
+body {
   background-color: #151b29;
 }
 
-#root {
-  
-  
-}
+#root {}
 
-#ul-list{
-  width: 90%; /* Keep this */
+#ul-list {
+  width: 90%;
+  /* Keep this */
   display: flex;
-  flex-wrap: wrap; /* Allow items to wrap to the next row */
-  justify-content: space-between; /* Use space-between for better spacing */
-  gap: 20px; /* Optional: Add consistent gap between items */
- 
+  flex-wrap: wrap;
+  /* Allow items to wrap to the next row */
+  justify-content: space-between;
+  /* Use space-between for better spacing */
+  gap: 20px;
+  /* Optional: Add consistent gap between items */
+
 }
 
-.li-list-cls{
-  width: calc(33.333% - 20px); /* Adjust width to fit three items, accounting for gaps */
+.li-list-cls {
+  width: calc(33.333% - 20px);
+  /* Adjust width to fit three items, accounting for gaps */
   background-color: #252f46;
   list-style-type: none;
   color: rgb(127, 137, 146);
@@ -27,7 +29,7 @@ body{
 
 }
 
-.h2-title-cls{
+.h2-title-cls {
   border: solid 2px rgb(127, 137, 146);
   border-radius: 0.5em;
   width: 100%;
@@ -36,10 +38,11 @@ body{
   text-align: center;
   box-sizing: border-box;
   color: #D3D3D3;
-  
+
   margin-top: 0;
 }
-.img-picture-cls{
+
+.img-picture-cls {
   width: 70%;
   display: block;
   padding: 10px;
@@ -47,38 +50,44 @@ body{
   margin-left: 15%;
   margin-right: 15%;
 }
-.p-summary-cls{
+
+.p-summary-cls {
   margin: 10% 10%;
   color: lightgray;
 }
 
-.p-episode-link{
-  margin: auto 10% 5% 10%; /* Push the link to the bottom */
+.p-episode-link {
+  margin: auto 10% 5% 10%;
+  /* Push the link to the bottom */
   color: lightgray;
 }
-.episode-link{
+
+.episode-link {
   text-decoration: none;
   color: #0e56f1;
 }
 
-.li-list-cls:hover{
+.li-list-cls:hover {
   /* border-color: #f1ff5c; */
   box-shadow: 0 0.5em 1em -0.4em #f1ff5c;
   transform: translateY(-0.5em);
   width: calc(33.333% - 10px);
-  .p-episode-link{
+
+  .p-episode-link {
     box-shadow: 0.3em 0.3em 1em -0.5em #f1ff5c;
   }
 }
-@media(max-width:820px){
-  .li-list-cls{
+
+@media(max-width:820px) {
+  .li-list-cls {
     width: 45%;
-    
+
   }
-  
+
 }
-@media(max-width:450px){
-  .li-list-cls{
+
+@media(max-width:450px) {
+  .li-list-cls {
     width: 75%;
     margin-left: 5%;
     margin-right: 5%;
@@ -106,7 +115,8 @@ body{
   margin-top: 10px;
   color: #63a6a9;
 }
-h1{
+
+h1 {
   text-align: center;
   color: #63a6a9;
 
