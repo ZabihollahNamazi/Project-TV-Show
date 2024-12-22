@@ -34,7 +34,11 @@ async function fetchEpisodes() {
 // Handle and display errors
 function showError(error) {
   const root = document.getElementById("root");
-  root.innerHTML = `<p style="color: red;">Error loading episodes: ${error.message}</p>`;
+  if (root) {
+    root.innerHTML = `<p style="color: red;">Error loading episodes: ${error.message}</p>`;
+  } else {
+    console.error("Root element not found. Cannot display error message.");
+  }
 }
 
 // Sets up the search bar functionality
@@ -61,13 +65,22 @@ function setupSearch(episodeList) {
 
 // Displays the list of episodes on the page
 function displayEpisodes(episodeList) {
-  const ulList = document.getElementById("ul-list");
-  ulList.innerHTML = ""; // Clear existing content
+  const ulList = document.createElement("ul");
+  ulList.id = "ul-list";
+  ulList.style.width = "90%";
+  ulList.style.margin = "0 auto";
+  ulList.style.display = "flex";
+  ulList.style.flexWrap = "wrap";
+  ulList.style.justifyContent = "space-between";
+  ulList.style.gap = "20px";
+
+  const root = document.getElementById("root");
+  root.innerHTML = ""; // Clear existing content
+  root.appendChild(ulList);
 
   // Iterate through the list of episodes and create elements for each
   for (let episode of episodeList) {
     let liList = document.createElement("li");
-    ulList.appendChild(liList);
     liList.classList.add("li-list-cls");
 
     // Create episode title
@@ -97,6 +110,9 @@ function displayEpisodes(episodeList) {
     liList.appendChild(episodePicture);
     liList.appendChild(episodeSummary);
     liList.appendChild(source);
+
+    // Append list item to the ul
+    ulList.appendChild(liList);
   }
 }
 
