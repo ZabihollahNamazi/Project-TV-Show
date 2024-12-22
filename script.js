@@ -1,119 +1,87 @@
 // Main setup function called when the page loads
 function setup() {
-  fetchEpisodes() // Fetch episodes dynamically
-    .then((allEpisodes) => {
-      setupSearch(allEpisodes); // Initialize search functionality
-      displayEpisodes(allEpisodes); // Display all episodes on the page
-    })
-    .catch((error) => {
-      showError(error); // Handle and display errors
-    });
+  // Fetch episodes from the API and display them
+  fetchEpisodes();
 }
 
 // Fetch episodes from the TVMaze API
-async function fetchEpisodes() {
-  const url = "https://api.tvmaze.com/shows/82/episodes";
+function fetchEpisodes() {
+  const ulList = document.getElementById("ul-list"); // Root element for displaying episodes
 
-  // Show loading message
-  const root = document.getElementById("root");
-  root.innerHTML = "<p>Loading episodes, please wait...</p>";
-
-  try {
-    const response = await fetch(url);
-    if (!response.ok) {
-      throw new Error(`HTTP error! status: ${response.status}`);
-    }
-    const data = await response.json();
-    root.innerHTML = ""; // Clear loading message after data is fetched
-    return data;
-  } catch (error) {
-    throw error;
+  if (!ulList) {
+    console.error("Error: 'ul-list' element not found.");
+    return;
   }
-}
 
-// Handle and display errors
-function showError(error) {
-  const root = document.getElementById("root");
-  if (root) {
-    root.innerHTML = `<p style="color: red;">Error loading episodes: ${error.message}</p>`;
-  } else {
-    console.error("Root element not found. Cannot display error message.");
-  }
-}
+  // Show loading message while fetching data
+  ulList.innerHTML = "<li>Loading episodes...</li>";
 
-// Sets up the search bar functionality
-function setupSearch(episodeList) {
-  const searchInput = document.getElementById("search-input");
-  const searchResult = document.getElementById("search-result");
-
-  // Listen for user input in the search bar
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase();
-
-    // Filter episodes based on the search query
-    const filteredEpisodes = episodeList.filter(
-      (episode) =>
-        episode.name.toLowerCase().includes(query) ||
-        episode.summary.toLowerCase().includes(query)
-    );
-
-    // Update search result text and display filtered episodes
-    searchResult.textContent = `Displaying ${filteredEpisodes.length} / ${episodeList.length} episodes`;
-    displayEpisodes(filteredEpisodes);
-  });
+  // Fetch data from TVMaze API
+  fetch("https://api.tvmaze.com/shows/82/episodes")
+    .then((response) => {
+      if (!response.ok) {
+        throw new Error("Failed to fetch episodes from API.");
+      }
+      return response.json();
+    })
+    .then((episodes) => {
+      if (episodes.length > 0) {
+        // Display episodes if data is fetched successfully
+        displayEpisodes(episodes);
+      } else {
+        // Handle the case where no episodes are returned
+        ulList.innerHTML = "<li>No episodes available at the moment.</li>";
+      }
+    })
+    .catch((error) => {
+      // Handle any fetch or network errors
+      console.error("Error fetching episodes:", error);
+      ulList.innerHTML = "<li>Error loading episodes. Please try again later.</li>";
+    });
 }
 
 // Displays the list of episodes on the page
-function displayEpisodes(episodeList) {
-  const ulList = document.createElement("ul");
-  ulList.id = "ul-list";
-  ulList.style.width = "90%";
-  ulList.style.margin = "0 auto";
-  ulList.style.display = "flex";
-  ulList.style.flexWrap = "wrap";
-  ulList.style.justifyContent = "space-between";
-  ulList.style.gap = "20px";
+function displayEpisodes(episodes) {
+  const ulList = document.getElementById("ul-list");
+  ulList.innerHTML = ""; // Clear any existing content
 
-  const root = document.getElementById("root");
-  root.innerHTML = ""; // Clear existing content
-  root.appendChild(ulList);
-
-  // Iterate through the list of episodes and create elements for each
-  for (let episode of episodeList) {
-    let liList = document.createElement("li");
-    liList.classList.add("li-list-cls");
+  episodes.forEach((episode) => {
+    // Create list item for each episode
+    const li = document.createElement("li");
+    li.classList.add("li-list-cls");
 
     // Create episode title
-    let episodeTitle = document.createElement("h2");
-    episodeTitle.innerHTML =
-      `${episode.name} - S${episode.season.toString().padStart(2, "0")}E${episode.number.toString().padStart(2, "0")}`;
-    episodeTitle.classList.add("h2-title-cls");
+    const title = document.createElement("h2");
+    title.textContent = `${episode.name} - S${String(episode.season).padStart(2, "0")}E${String(
+      episode.number
+    ).padStart(2, "0")}`;
+    title.classList.add("h2-title-cls");
 
     // Create episode image
-    let episodePicture = document.createElement("img");
-    episodePicture.src = episode.image?.medium || "https://via.placeholder.com/210x295";
-    episodePicture.alt = `Image for ${episode.name}`;
-    episodePicture.classList.add("img-picture-cls");
+    const img = document.createElement("img");
+    img.src = episode.image ? episode.image.medium : "https://via.placeholder.com/250";
+    img.alt = `Image for ${episode.name}`;
+    img.classList.add("img-picture-cls");
 
     // Create episode summary
-    let episodeSummary = document.createElement("p");
-    episodeSummary.innerHTML = episode.summary || "No summary available.";
-    episodeSummary.classList.add("p-summary-cls");
+    const summary = document.createElement("p");
+    summary.innerHTML = episode.summary || "No summary available.";
+    summary.classList.add("p-summary-cls");
 
-    // Create link to the episode on TVMaze
-    let source = document.createElement("p");
-    source.innerHTML = `<p>Link to this episode: <a href=${episode.url} target="_blank" class="episode-link">TVMaze</a></p>`;
-    source.classList.add("p-episode-link");
+    // Create link to TVMaze episode
+    const linkContainer = document.createElement("p");
+    linkContainer.classList.add("p-episode-link");
+    linkContainer.innerHTML = `Link to this episode: <a href="${episode.url}" target="_blank" class="episode-link">TVMaze</a>`;
 
     // Append elements to the list item
-    liList.appendChild(episodeTitle);
-    liList.appendChild(episodePicture);
-    liList.appendChild(episodeSummary);
-    liList.appendChild(source);
+    li.appendChild(title);
+    li.appendChild(img);
+    li.appendChild(summary);
+    li.appendChild(linkContainer);
 
-    // Append list item to the ul
-    ulList.appendChild(liList);
-  }
+    // Append list item to the unordered list
+    ulList.appendChild(li);
+  });
 }
 
 // Call the setup function when the page loads
