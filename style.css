@@ -34,6 +34,7 @@ h1 {
 #search-result {
   margin-top: 10px;
   color: #63a6a9;
+  text-align: center;
 }
 
 /* Dropdown (Jump Bar) Styling */
@@ -45,12 +46,12 @@ h1 {
 }
 
 #episode-select {
-  width: 40%;
+  width: 30%;
   padding: 10px;
   font-size: 16px;
   border-radius: 15px;
   border: 1px solid #ccc;
-  background-color: #d3f9f9;
+  background-color: aquamarine;
   color: #151b29;
   outline: none;
   cursor: pointer;
