@@ -11,15 +11,13 @@ function setup() {
 }
 
 function makePageForEpisodes(episodeList) {
-  // const rootElem = document.getElementById("root");
-  // rootElem.textContent = `Got ${episodeList.length} episode(s)`;
+  
   let ulList = document.getElementById("ul-list");
 
   let filteredEpisodes = state.allEpisodes.filter(function(episode){
     return(episode.name.toLowerCase().includes(state.searchTerm.toLowerCase()))
   })
 
-  //for(let item in episodeList){
   let cards = filteredEpisodes.map ((item)=> {
     return createFilmCard(item)
   })
@@ -27,14 +25,7 @@ function makePageForEpisodes(episodeList) {
 
   let searchEpisodeLabel = document.querySelector("#search-episode-label");
   searchEpisodeLabel.innerHTML = `Displaying ${filteredEpisodes.length}/${state.allEpisodes.length} episodes`;
- 
-  // let sss = episodeList.filter(x=> {
-  //   return x.name === "Lord Snow"
-  // })
-  // console.log(sss);
-  // //}
 }
-
 
 
 function createFilmCard(item) {
@@ -74,14 +65,7 @@ searchEpisode.addEventListener('keyup', ()=> {
   let bodyUl = document.querySelector("#ul-list");
   bodyUl.innerHTML = "";
 
-  
-  //console.log(state.searchTerm)
-
-//   let filteredEpisodes = state.allEpisodes.filter(function(episode){
-//     return(episode.name.toLowerCase().includes(state.searchTerm.toLowerCase()))
-//   })
-// console.log(filteredEpisodes)
-makePageForEpisodes()
+  makePageForEpisodes()
 })
 
 
