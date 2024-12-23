@@ -85,3 +85,29 @@ body{
   }
 }
 
+#search-bar {
+  width: 90%;
+  margin: 20px auto;
+  display: flex;
+  flex-direction: column;
+  align-items: center;
+}
+
+#search-input {
+  width: 40%;
+  padding: 10px;
+  font-size: 16px;
+  border-radius: 15px;
+  border: 1px solid #ccc;
+  background-color: aquamarine;
+}
+
+#search-result {
+  margin-top: 10px;
+  color: #63a6a9;
+}
+h1{
+  text-align: center;
+  color: #63a6a9;
+
+}
