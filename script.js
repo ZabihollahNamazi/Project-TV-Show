@@ -1,77 +1,167 @@
-// Main setup function called when the page loads
+// Cache for shows and episodes to minimize API requests
+const showCache = {};
+
 function setup() {
-  const allEpisodes = getAllEpisodes(); // Fetch all episodes
-  setupSearch(allEpisodes); // Initialize search functionality
-  displayEpisodes(allEpisodes); // Display all episodes on the page
+  // Fetch and display the list of TV shows
+  fetchShows();
+
+  // Add event listener for search input
+  const searchInput = document.getElementById("search-input");
+  searchInput.addEventListener("input", () => filterEpisodes());
 }
 
-// Sets up the search bar functionality
-function setupSearch(episodeList) {
-  const searchInput = document.getElementById("search-input");
-  const searchResult = document.getElementById("search-result");
+// Fetch the list of TV shows
+function fetchShows() {
+  const showSelect = document.getElementById("show-select");
 
-  // Listen for user input in the search bar
-  searchInput.addEventListener("input", () => {
-    const query = searchInput.value.toLowerCase();
+  // Show loading message in the dropdown
+  showSelect.innerHTML = "<option value=''>Loading shows...</option>";
 
-    // Filter episodes based on the search query
-    const filteredEpisodes = episodeList.filter(
-      (episode) =>
-        episode.name.toLowerCase().includes(query) ||
-        episode.summary.toLowerCase().includes(query)
-    );
+  fetch("https://api.tvmaze.com/shows")
+    .then((response) => {
+      if (!response.ok) throw new Error("Failed to fetch shows");
+      return response.json();
+    })
+    .then((shows) => {
+      // Sort shows alphabetically (case-insensitive)
+      shows.sort((a, b) => a.name.localeCompare(b.name, undefined, { sensitivity: "base" }));
 
-    // Update search result text and display filtered episodes
-    searchResult.textContent = `Displaying ${filteredEpisodes.length} / ${episodeList.length} episodes`;
-    displayEpisodes(filteredEpisodes);
+      // Populate dropdown
+      shows.forEach((show) => {
+        const option = document.createElement("option");
+        option.value = show.id;
+        option.textContent = show.name;
+        showSelect.appendChild(option);
+
+        // Cache show data
+        showCache[show.id] = show;
+      });
+
+      // Add event listener for show selection
+      showSelect.addEventListener("change", (event) => {
+        const showId = event.target.value;
+        if (showId) fetchEpisodesForShow(showId);
+      });
+    })
+    .catch((error) => {
+      console.error("Error fetching shows:", error);
+      showSelect.innerHTML = "<option value=''>Error loading shows</option>";
+    });
+}
+
+// Fetch episodes for a specific show
+function fetchEpisodesForShow(showId) {
+  const ulList = document.getElementById("ul-list");
+  const episodeSelect = document.getElementById("episode-select");
+
+  if (showCache[showId]?.episodes) {
+    // Use cached episodes if available
+    displayEpisodes(showCache[showId].episodes);
+    populateDropdown(showCache[showId].episodes);
+    return;
+  }
+
+  // Show loading message
+  ulList.innerHTML = "<li>Loading episodes...</li>";
+  episodeSelect.innerHTML = "<option value=''>Loading episodes...</option>";
+
+  fetch(`https://api.tvmaze.com/shows/${showId}/episodes`)
+    .then((response) => {
+      if (!response.ok) throw new Error("Failed to fetch episodes");
+      return response.json();
+    })
+    .then((episodes) => {
+      // Cache episodes
+      showCache[showId].episodes = episodes;
+
+      // Update UI
+      displayEpisodes(episodes);
+      populateDropdown(episodes);
+    })
+    .catch((error) => {
+      console.error("Error fetching episodes:", error);
+      ulList.innerHTML = "<li>Error loading episodes. Please try again later.</li>";
+      episodeSelect.innerHTML = "<option value=''>Error loading episodes</option>";
+    });
+}
+
+// Populate episode dropdown
+function populateDropdown(episodes) {
+  const episodeSelect = document.getElementById("episode-select");
+  episodeSelect.innerHTML = "<option value=''>Select an episode...</option>";
+
+  episodes.forEach((episode, index) => {
+    const option = document.createElement("option");
+    option.value = index;
+    option.textContent = `${episode.name} - S${String(episode.season).padStart(2, "0")}E${String(
+      episode.number
+    ).padStart(2, "0")}`;
+    episodeSelect.appendChild(option);
+  });
+
+  // Add event listener for episode selection
+  episodeSelect.addEventListener("change", (event) => {
+    const selectedEpisode = episodes[event.target.value];
+    if (selectedEpisode) {
+      document.getElementById("search-result").textContent = `Displaying: ${selectedEpisode.name}`;
+      displayEpisodes([selectedEpisode]);
+    }
   });
 }
 
-// Displays the list of episodes on the page
-function displayEpisodes(episodeList) {
+// Display episodes on the page
+function displayEpisodes(episodes) {
   const ulList = document.getElementById("ul-list");
-  ulList.innerHTML = ""; // Clear existing content
+  ulList.innerHTML = ""; // Clear existing episodes
 
-  // Iterate through the list of episodes and create elements for each
-  for (let item in episodeList) {
-    let liList = document.createElement("li");
-    ulList.appendChild(liList);
-    liList.classList.add("li-list-cls");
+  episodes.forEach((episode) => {
+    const li = document.createElement("li");
+    li.classList.add("li-list-cls");
 
-    // Create episode title
-    let episodeTitle = document.createElement("h2");
-    episodeTitle.innerHTML =
-      episodeList[item].name +
-      ` - S${episodeList[item].season
-        .toString()
-        .padStart(2, "0")}E${episodeList[item].number
-        .toString()
-        .padStart(2, "0")}`;
-    episodeTitle.classList.add("h2-title-cls");
+    const title = document.createElement("h2");
+    title.textContent = `${episode.name} - S${String(episode.season).padStart(2, "0")}E${String(
+      episode.number
+    ).padStart(2, "0")}`;
+    title.classList.add("h2-title-cls");
 
-    // Create episode image
-    let episodePicture = document.createElement("img");
-    episodePicture.src = episodeList[item].image.medium;
-    episodePicture.alt = `Image for ${episodeList[item].name}`;
-    episodePicture.classList.add("img-picture-cls");
+    const img = document.createElement("img");
+    img.src = episode.image ? episode.image.medium : "https://via.placeholder.com/250";
+    img.alt = `Image for ${episode.name}`;
+    img.classList.add("img-picture-cls");
 
-    // Create episode summary
-    let episodeSummary = document.createElement("p");
-    episodeSummary.innerHTML = episodeList[item].summary;
-    episodeSummary.classList.add("p-summary-cls");
+    const summary = document.createElement("p");
+    summary.innerHTML = episode.summary || "No summary available.";
+    summary.classList.add("p-summary-cls");
 
-    // Create link to the episode on TVMaze
-    let source = document.createElement("p");
-    source.innerHTML = `<p>Link to this episode: <a href=${episodeList[item].url} target="_blank" class="episode-link">TVMaze</a></p>`;
-    source.classList.add("p-episode-link");
+    const linkContainer = document.createElement("p");
+    linkContainer.classList.add("p-episode-link");
+    linkContainer.innerHTML = `Link to this episode: <a href="${episode.url}" target="_blank" class="episode-link">TVMaze</a>`;
 
-    // Append elements to the list item
-    liList.appendChild(episodeTitle);
-    liList.appendChild(episodePicture);
-    liList.appendChild(episodeSummary);
-    liList.appendChild(source);
-  }
+    li.appendChild(title);
+    li.appendChild(img);
+    li.appendChild(summary);
+    li.appendChild(linkContainer);
+    ulList.appendChild(li);
+  });
 }
 
-// Call the setup function when the page loads
+// Filter episodes by search term
+function filterEpisodes() {
+  const searchInput = document.getElementById("search-input").value.toLowerCase();
+  const showSelect = document.getElementById("show-select");
+  const showId = showSelect.value;
+
+  if (!showId || !showCache[showId]?.episodes) return;
+
+  const filteredEpisodes = showCache[showId].episodes.filter((episode) =>
+    episode.name.toLowerCase().includes(searchInput)
+  );
+
+  displayEpisodes(filteredEpisodes);
+  document.getElementById("search-result").textContent = filteredEpisodes.length
+    ? `Displaying ${filteredEpisodes.length} episode(s)`
+    : "No episodes found.";
+}
+
+// Initialize the application on page load
 window.onload = setup;
