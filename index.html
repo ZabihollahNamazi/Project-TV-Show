@@ -1,34 +1,43 @@
 <!DOCTYPE html>
 <html lang="en">
-  <head>
-    <meta charset="UTF-8" />
-    <meta name="viewport" content="width=device-width, initial-scale=1.0" />
-    <title>TV Show Project | Zabihollah Namazi (My GitHub ZabihollahNamazi)</title>
-    <link href="style.css" rel="stylesheet" />
-    <link rel="icon" href="/favicon.ico" type="image/x-icon" />
-  </head>
 
-  <body>
-    <h1>TV Show Episodes</h1>
-    <div id="search-bar">
-      <input type="text" id="search-input" placeholder="Search episodes..." />
-      <p id="search-result">Displaying all episodes</p>
-    </div>
-    <div id="root">
-      <ul id="ul-list">
-        
-      </ul>
+<head>
+  <meta charset="UTF-8">
+  <meta name="viewport" content="width=device-width, initial-scale=1.0">
+  <title>TV Show Project | Jump to Episode</title>
+  <link href="style.css" rel="stylesheet">
+  <link rel="icon" href="/favicon.ico" type="image/x-icon">
+</head>
 
-    </div>
+<body>
+  <h1>TV Show Episodes</h1>
 
+  <!-- Search Bar -->
+  <div id="search-bar">
+    <input type="text" id="search-input" placeholder="Search episodes...">
+  </div>
 
+  <!-- Show Selector Dropdown -->
+  <div id="show-bar">
+    <select id="show-select">
+      <option value="">Loading shows...</option>
+    </select>
+  </div>
 
+  <!-- Episode Jump Dropdown -->
+  <div id="jump-bar">
+    <select id="episode-select">
+      <option value="">Select an episode...</option>
+    </select>
+  </div>
+  <p id="search-result">Displaying all episodes</p>
 
-    
-    <!-- Loads a provided function called getAllEpisodes() which returns all episodes -->
-    <script src="episodes.js"></script>
+  <!-- Root Element for Episodes -->
+  <div id="root">
+    <ul id="ul-list"></ul>
+  </div>
 
-    <!-- Loads YOUR javascript code -->
-    <script src="script.js"></script>
-  </body>
+  <script src="script.js"></script>
+</body>
+
 </html>
