@@ -92,5 +92,34 @@ searchEpisode.addEventListener('keyup', ()=> {
   makePageForEpisodes()
 })
 
+let dropDownEpisode = document.querySelector("#episode-select");
+
+// Populate the dropdown when the page loads or state is ready
+function populateDropdown() {
+  // Clear any existing options
+  dropDownEpisode.innerHTML = '';
+
+  // Loop through each episode in allEpisodes
+  for (let i = 0; i < state.allEpisodes.length; i++) {
+    let episode = state.allEpisodes[i]; // Accessing the individual episode object
+    let season = episode.season.toString().padStart(2, "0");
+    let episodeNumber = episode.episode.toString().padStart(2, "0");
+
+    // Create a new option element for each episode
+    let option = document.createElement("option");
+    option.value = `S${season}E${episodeNumber}`;
+    option.innerHTML = `S${season}E${episodeNumber} ${episode.name}`;
+
+    // Append the new option to the dropdown
+    dropDownEpisode.appendChild(option);
+  }
+}
+
+// Call this function when your state is ready
+populateDropdown();
+
+
+
+
 //window.onload = setup();
 
