@@ -1,6 +1,4 @@
 
-//You can edit ALL of the code here
-//const allEpisodes = getAllEpisodes();
 const state = {
   allEpisodes:[],
   searchTerm:"",
@@ -92,59 +90,28 @@ searchEpisode.addEventListener('keyup', ()=> {
   makePageForEpisodes()
 })
 
-// let dropDownEpisode = document.querySelector("#episode-select");
-
-// // Populate the dropdown when the page loads or state is ready
-// function populateDropdown() {
-//   // Clear any existing options
-//   dropDownEpisode.innerHTML = '<option value="default" selected disabled>Select an option</option>';
-
-//   // Loop through each episode in allEpisodes
-//   for (let i = 0; i < state.allEpisodes.length; i++) {
-//     let episode = state.allEpisodes[i]; // Accessing the individual episode object
-//     let season = episode.season.toString().padStart(2, "0");
-//     let episodeNumber = episode.episode.toString().padStart(2, "0");
-
-//     // Create a new option element for each episode
-//     let option = document.createElement("option");
-//     option.value = `S${season}E${episodeNumber}`;
-//     option.innerHTML = `S${season}E${episodeNumber} ${episode.name}`;
-//     console.log(option);
-//     // Append the new option to the dropdown
-//     dropDownEpisode.appendChild(option);
-//   }
-// }
-
-// // Call this function when your state is ready
-// console.log(populateDropdown());
-
-
 const dropDownEpisode = document.querySelector("#episode-select");
 dropDownEpisode.addEventListener("click", () => {
-
-
-  const eachEpisode = state.allEpisodes;
-  console.log("each episode", eachEpisode);
-  // Function to populate the dropdown
-  function populateDropdown() {
-    dropDownEpisode.innerHTML = '<option value="default" selected disabled>Select an option</option>';
-
-    for (let episode of eachEpisode) {
-      const season = episode.season.toString().padStart(2, "0");
-      const episodeNumber = episode.number.toString().padStart(2, "0");
-
-      const option = document.createElement("option");
-      option.value = `S${season}E${episodeNumber}`;
-      option.textContent = `S${season}E${episodeNumber} ${episode.name}`;
-
-      dropDownEpisode.appendChild(option);
-    }
-  }
-
   // Call the function to populate the dropdown
   populateDropdown();
 });
+ // Function to populate the dropdown
+function populateDropdown() {
+  dropDownEpisode.innerHTML = '<option value="default" selected disabled>Select an option</option>';
 
+  const eachEpisode = state.allEpisodes;
+  console.log("each episode", eachEpisode);
+  for (let episode of eachEpisode) {
+    const season = episode.season.toString().padStart(2, "0");
+    const episodeNumber = episode.number.toString().padStart(2, "0");
+
+    const option = document.createElement("option");
+    option.value = `S${season}E${episodeNumber}`;
+    option.textContent = `S${season}E${episodeNumber} ${episode.name}`;
+
+    dropDownEpisode.appendChild(option);
+  }
+}
 
 
 //window.onload = setup();
