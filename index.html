@@ -10,11 +10,17 @@
 
   <body>
     <div id="search">
+
+      <form id="select-show-form">
+        <select id="show-select" name="show">
+          <option value="default" selected disabled>Select a TV Show</option>
+        </select>
+        <label for="show-select" id="show-select-label" class="select-search-label">Select TV Show</label>
+      </form>
+
       <form id="select-episode-form">
-        
         <select id="episode-select" name="episodes">
           <option value="default" selected disabled>Select an episode</option>
-          
         </select>
         <label for="episode-select" id="episode-select-label" class="select-search-label">Select Episode</label>
       </form>

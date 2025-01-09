@@ -1,3 +1,59 @@
+let tvShows = [];
+
+// Function to fetch TV shows
+function fetchTvShows() {
+  return fetch('https://api.tvmaze.com/shows')
+    .then((response) => {
+      if (!response.ok) throw new Error("Network response was not ok");
+      return response.json(); // Parse and return JSON data
+    })
+    .catch((error) => {
+      console.error("Error fetching data:", error);
+    });
+}
+
+// Populate the dropdown with TV shows
+function populateDropdownShows() {
+  fetchTvShows().then((data) => {
+    if (data) {
+      tvShows = data;
+
+      // Reset the dropdown content
+      dropDownTvShows.innerHTML = '<option value="default" selected disabled>Select a TV Show</option>';
+
+      // Populate the dropdown with TV shows
+      tvShows.forEach((show) => {
+        const option = document.createElement("option");
+        option.value = show.id; // Use the show's ID for fetching episodes
+        option.textContent = show.name; // Display the show's name
+        dropDownTvShows.appendChild(option);
+      });
+
+      console.log("Dropdown populated with shows:", tvShows);
+    }
+  });
+}
+
+// Add an event listener to the dropdown
+const dropDownTvShows = document.querySelector("#show-select");
+document.addEventListener("DOMContentLoaded", () => {
+  populateDropdownShows(); // Populate the dropdown when the page loads
+});
+
+// Add event listener for selecting a TV show
+dropDownTvShows.addEventListener("change", (event) => {
+  const selectedShowId = event.target.value; // Get the selected show ID
+  if (selectedShowId !== "default") {
+    const selectedShowApi = `https://api.tvmaze.com/shows/${selectedShowId}/episodes`; // Construct the episodes API URL
+    console.log(`Fetching episodes from: ${selectedShowApi}`);
+
+    // Fetch and display episodes
+    //fetchEpisodes(selectedShowApi);
+    displayEpisodes(selectedShowApi);
+  }
+});
+
+function displayEpisodes(selectedShowApi){
 
 const state = {
   allEpisodes:[],
@@ -8,7 +64,7 @@ function fetchFilms(){
   const ulList = document.getElementById("ul-list");
   if (ulList) ulList.innerHTML = "<p>Loading episodes, please wait...</p>";
 
-  return fetch('https://api.tvmaze.com/shows/82/episodes').then(function (data) {
+  return fetch(`${selectedShowApi}`).then(function (data) {
     if (!data.ok) throw new Error("Network response was not ok");
     return data.json();
   })
@@ -113,5 +169,5 @@ function populateDropdown() {
   }
 }
 
-
+}
 //window.onload = setup();
