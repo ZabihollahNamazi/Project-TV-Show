@@ -12,6 +12,86 @@ function fetchTvShows() {
     });
 }
 
+function createShowCard() {
+  let ulListShow = document.getElementById("ul-list");
+  ulListShow.innerHTML = ""; // Clear previous cards
+  tvShows.forEach((show) => {
+    let liList = document.createElement('li');
+    liList.classList.add("li-list-cls-show");
+
+    // Title container
+    let divTitleShow = document.createElement('div');
+    let showTitle = document.createElement("h2");
+    showTitle.innerHTML = show.name;
+    showTitle.classList.add("h2-title-cls-show");
+    divTitleShow.appendChild(showTitle);
+
+    // Container for divOne and divTwo
+    let contentContainer = document.createElement('div');
+    contentContainer.classList.add("content-container");
+
+    // divOne: Image and Summary
+    let divOne = document.createElement('div');
+    divOne.classList.add("div-one");
+    let showPicture = document.createElement("img");
+    showPicture.src = show.image ? show.image.medium : "placeholder.jpg";
+    showPicture.alt = `${show.name}`;
+    showPicture.classList.add("img-picture-cls-show");
+    let showSummary = document.createElement("p");
+    showSummary.innerHTML = show.summary;
+    showSummary.classList.add("p-summary-cls-show");
+    divOne.appendChild(showPicture);
+    divOne.appendChild(showSummary);
+
+    // divTwo: Additional Details
+    let divTwo = document.createElement('div');
+    divTwo.classList.add("div-two");
+    let rated = document.createElement("p");
+    rated.innerHTML = `Rated: ${show.rating.average || "N/A"}`;
+    let genres = document.createElement("p");
+    genres.innerHTML = `Genres: ${show.genres.join(", ")}`;
+    let status = document.createElement("p");
+    status.innerHTML = `Status: ${show.status}`;
+    let runTime = document.createElement("p");
+    runTime.innerHTML = `Runtime: ${show.runtime || "N/A"} minutes`;
+    divTwo.appendChild(rated);
+    divTwo.appendChild(genres);
+    divTwo.appendChild(status);
+    divTwo.appendChild(runTime);
+
+    // Add divOne and divTwo to the content container
+    contentContainer.appendChild(divOne);
+    contentContainer.appendChild(divTwo);
+
+    // Add everything to the list item
+    liList.appendChild(divTitleShow);
+    liList.appendChild(contentContainer);
+
+    liList.addEventListener("click", (event) => {
+      const selectedShowId = show.id; // Get the selected show ID
+      if (selectedShowId !== "default") {
+        const selectedShowApi = `https://api.tvmaze.com/shows/${selectedShowId}/episodes`; // Construct the episodes API URL
+        console.log(`Fetching episodes from: ${selectedShowApi}`);
+        // Fetch and display episodes
+        //fetchEpisodes(selectedShowApi);
+        displayEpisodes(selectedShowApi);
+      }
+      });
+      
+    // Append the list item to the main list
+    ulListShow.appendChild(liList);
+  });
+}
+
+fetchTvShows().then((data) => {
+  if (data) {
+    tvShows = data;
+    console.log("create show card ", tvShows);
+    createShowCard(tvShows);
+
+  }
+})
+
 // Populate the dropdown with TV shows
 function populateDropdownShows() {
   fetchTvShows().then((data) => {
@@ -118,7 +198,7 @@ function createFilmCard(item) {
 
   let episodePicture = document.createElement("img");
   episodePicture.src = item.image.medium;
-  episodePicture.alt = "Game of Thrones";
+  episodePicture.alt = `${item.name}`;
   episodePicture.classList.add("img-picture-cls");
 
   let episodeSummary = document.createElement("p");
@@ -170,4 +250,6 @@ function populateDropdown() {
 }
 
 }
+
+
 //window.onload = setup();

@@ -130,3 +130,64 @@ h1{
   color: #63a6a9;
 
 }
+
+
+
+/* General styles for the list item */
+.li-list-cls-show {
+  list-style-type: none;
+  margin-bottom: 20px;
+  border: 1px solid #6b6a6a;
+  border-radius: 8px;
+  padding: 15px;
+  box-shadow: 0 4px 6px rgba(0, 0, 0, 0.1);
+}
+
+/* Title styling */
+.h2-title-cls-show {
+  font-size: 24px;
+  color: #cccccc;
+  text-align: left; /* Center the title */
+  margin-bottom: 20px; /* Add some space below the title */
+}
+
+/* Flex container for divOne and divTwo */
+.content-container {
+  display: flex; /* Align divOne and divTwo horizontally */
+  gap: 20px; /* Add space between the two divs */
+}
+
+/* divOne (Image + Summary) */
+.div-one {
+  display: flex; /* Flexbox for aligning image and summary */
+  gap: 20px; /* Space between the image and the summary */
+  align-items: flex-start; /* Align items to the top */
+  flex: 3; /* Allow divOne to take more space */
+  border-right: 2px solid #535353;
+  padding-right: 10px;
+}
+
+/* Image styling */
+.img-picture-cls-show {
+  max-width: 150px;
+  height: auto;
+  border-radius: 8px;
+}
+
+/* Summary styling */
+.p-summary-cls-show {
+  font-size: 14px;
+  color: #cccccc;
+  line-height: 1.5;
+}
+
+/* divTwo (Details) */
+.div-two {
+  display: flex;
+  flex-direction: column; /* Stack the details vertically */
+  gap: 10px; /* Space between the details */
+  flex: 1; /* Allow divTwo to take less space */
+  font-size: 14px;
+  color: #cccccc;
+  padding-left: 10px;
+}
