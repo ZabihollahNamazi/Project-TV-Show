@@ -12,7 +12,21 @@ function fetchTvShows() {
     });
 }
 
-function createShowCard() {
+function filterShows(query) {
+  let ulListShow = document.getElementById("ul-list");
+  ulListShow.innerHTML = ""; // Clear previous cards
+
+  const filteredShows = tvShows.filter(show => {
+    const titleMatch = show.name.toLowerCase().includes(query.toLowerCase());
+    const summaryMatch = show.summary.toLowerCase().includes(query.toLowerCase());
+    return titleMatch || summaryMatch; // Show if either title or summary matches
+  });
+
+  // Recreate the cards for the filtered shows
+  createShowCard(filteredShows);
+}
+
+function createShowCard(tvShows) {
   let ulListShow = document.getElementById("ul-list");
   ulListShow.innerHTML = ""; // Clear previous cards
   tvShows.forEach((show) => {
@@ -83,6 +97,12 @@ function createShowCard() {
   });
 }
 
+// Add event listener for searching
+document.getElementById("search-episode").addEventListener("keyup", (event) => {
+  const searchQuery = event.target.value; // Get the search query
+  filterShows(searchQuery); // Filter and update the display
+});
+
 fetchTvShows().then((data) => {
   if (data) {
     tvShows = data;
@@ -90,7 +110,7 @@ fetchTvShows().then((data) => {
     createShowCard(tvShows);
 
   }
-})
+});
 
 // Populate the dropdown with TV shows
 function populateDropdownShows() {
