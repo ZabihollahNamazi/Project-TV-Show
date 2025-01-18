@@ -18,17 +18,17 @@ body{
 
 .li-list-cls{
   width: calc(33.333% - 20px); /* Adjust width to fit three items, accounting for gaps */
-  background-color: #252f46;
+  background-color: #151b29;
   list-style-type: none;
   color: rgb(127, 137, 146);
-  border: 2px solid;
+  border: 1px solid #6b6a6a;
   border-radius: 3%;
   transition: all 0.15s;
 
 }
 
 .h2-title-cls{
-  border: solid 2px rgb(127, 137, 146);
+  border-bottom: 1px solid #6b6a6a;
   border-radius: 0.5em;
   width: 100%;
   padding-top: 10px;

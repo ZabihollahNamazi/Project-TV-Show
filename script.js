@@ -229,6 +229,8 @@ function createFilmCard(item) {
   source.innerHTML = `<p>Link to this episode  <a href=${item.url} target="_blank" class="episode-link">  TVMaze</a></p>`;
   source.classList.add("p-episode-link");
 
+  liList.setAttribute("id", `S${item.season.toString().padStart(2, "0")}E${item.number.toString().padStart(2, "0")}`)
+
   liList.appendChild(episodeTitle);
   liList.appendChild(episodePicture);
   liList.appendChild(episodeSummary);
@@ -268,7 +270,15 @@ function populateDropdown() {
     dropDownEpisode.appendChild(option);
   }
 }
-
+let dropDownEpi = document.getElementById("episode-select");
+dropDownEpi.addEventListener("change", function() {
+  const selectedValue = dropDownEpi.value;
+  console.log("values", selectedValue);
+  if(selectedValue){
+    const cardFilm = document.getElementById(selectedValue);
+    cardFilm.scrollIntoView({ behavior: 'smooth', block: 'start' });
+   }
+});
 }
 
 
